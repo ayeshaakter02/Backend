@@ -12,6 +12,11 @@ dbConnection()
 // router middleware 
 app.use(router)
 
+//page not found middleware
+app.use((req,res)=>{
+    return res.status(404).json({message : "route is not found"})
+})
+
 app.listen(port,()=>{
     console.log(`server is running port number ${port}`)
 })
