@@ -1,6 +1,6 @@
 const { default: mongoose } = require("mongoose")
 
-const signupSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     name : {
         type:String,
         required: true
@@ -24,6 +24,7 @@ const signupSchema = new mongoose.Schema({
         enum: ["user", "admin"],
         default: "user",
         type:String,
-        required: true
     }
 } , {timestamps:true})
+
+module.exports = mongoose.model("User", userSchema)
