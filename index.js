@@ -8,6 +8,8 @@ const pathNotFound = require('./src/utils/pathnotfound')
 const app = express()
 const port = process.env.PORT || 4000
 
+app.use(express.json());
+
 // database connection
 dbConnection()
 
@@ -16,6 +18,7 @@ app.use(router)
 
 //page not found middleware
 app.use(pathNotFound)
+
 // error handle
 app.use((errorHandlingMiddelware))
 
