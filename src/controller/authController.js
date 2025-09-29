@@ -19,17 +19,6 @@ const signupController = async (req, res, next) => {
         next(err);
       });
   });
-
-  // if(!name){
-  //     return res.status(404).json({ success:false, msg: "Name is required"})
-  // }
-  // if(!email){
-  //     return res.status(404).json({ success:false, msg: "email is required"})
-  // }
-  // else{
-  //     return res.send("all ok");
-  // }
-  // return res.send(req.body)
 };
 
 module.exports = { signupController };
