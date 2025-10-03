@@ -27,6 +27,10 @@ const signupController = async (req, res, next) => {
     //   })
     // }, 60000);
 
+    let info = {
+      name: user.name,
+      email: user.email,
+    }
     return res
       .status(201)
       .json({ success: true, message: "user created successfull", data: user })
@@ -44,7 +48,7 @@ const verifyOtpController = async (req, res, next)=>{
     return res.status(404).json({success:false, message:"user not found"})
   }else{
     if(user.otp === otp){
-      let verify = await userModel.findOneAndUpdate({email}, {verify:true}, {new:true})
+      let verify = await userModel.findOneAndUpdate({email}, {verify:true, otp:null}, {new:true}.select("-password"))
       return res.status(200).json({success:true, message:"otp verified", data:verify})
     }else{
     return res.status(404).json({success:false, message:"otp not match"})
@@ -52,4 +56,4 @@ const verifyOtpController = async (req, res, next)=>{
   }
 }
 
-module.exports = { signupController, verifyOtpController };
+module.exports = { signupController, verifyOtpController }; 
