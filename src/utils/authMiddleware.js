@@ -18,6 +18,11 @@ let TokenCheckMiddelware = (req, res, next) =>{
 }
 
 let adminCheck = (req, res, next) => {
+    if(req.userData.role == "admin"){
+        next();
+    } else {
+        return res.status(400).json({success:false, message: "access denid"})
+    }
     console.log(req.userData)
 }
 
