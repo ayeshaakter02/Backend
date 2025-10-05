@@ -76,7 +76,7 @@ const verifyOtpController = async (req, res, next) => {
   }
 };
 
-const loginController = async (res, req, next) => {
+const loginController = async (req, res, next) => {
   let { email, password } = req.body;
 
   let user = await userModel.findOne({ email });
@@ -104,4 +104,17 @@ const loginController = async (res, req, next) => {
   }
 };
 
-module.exports = { signupController, verifyOtpController, loginController };
+const alluserController = async (req, res, next) => {
+
+  try {
+    let allusers = await userModel.find({}).select("-paaword");
+    return res.status(200).json({success: true, message:"all users fetch successful", data: allusers})
+  } catch (error) {
+
+  }
+
+
+  
+}
+
+module.exports = { signupController, verifyOtpController, loginController, alluserController }
