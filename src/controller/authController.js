@@ -2,7 +2,7 @@ const userModel = require("../model/signup.model");
 const generateOTP = require("../utils/otp");
 const sendEmail = require("../utils/send-email");
 const bcrypt = require("bcrypt");
-
+const jwt = require('jsonwebtoken');
 
 const signupController = async (req, res, next) => {
   let { name, email, password, phone, image, role } = req.body;
@@ -88,9 +88,13 @@ const loginController = async (res, req, next) => {
   } else {
     bcrypt.compare(password, user.password, function (err, result) {
       if (result) {
+
+        let token = jwt.sign({ user }, process.env.PRIVETE_KEY, {expiresIn: "1m"});
+
+
         return res
           .status(200)
-          .json({ success: true, message: "login successfull", data: user });
+          .json({ success: true, message: "login successfull", data: user, token });
       } else {
         return res
           .status(404)
