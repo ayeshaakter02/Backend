@@ -1,9 +1,10 @@
 const userModel = require("../model/signup.model");
 const generateOTP = require("../utils/otp");
 const sendEmail = require("../utils/send-email");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 
-const  signupController = async (req, res, next) => {
+
+const signupController = async (req, res, next) => {
   let { name, email, password, phone, image, role } = req.body;
 
   let userfind = await userModel.findOne({ email });
@@ -64,7 +65,7 @@ const verifyOtpController = async (req, res, next) => {
       let verify = await userModel.findOneAndUpdate(
         { email },
         { verify: true, otp: null },
-        { new: true }.select("-password") 
+        { new: true }.select("-password")
       );
       return res
         .status(200)
@@ -73,29 +74,30 @@ const verifyOtpController = async (req, res, next) => {
       return res.status(404).json({ success: false, message: "otp not match" });
     }
   }
-}; 
+};
 
-const loginController = async (res, req, next) =>{
-  let {email, password} = req.body;
+const loginController = async (res, req, next) => {
+  let { email, password } = req.body;
 
-  let user = await userModel.findOne({email})
+  let user = await userModel.findOne({ email });
 
-  if(!user){
-    return res.status(404).json({ success:false, message: "invalid credential"});
+  if (!user) {
+    return res
+      .status(404)
+      .json({ success: false, message: "invalid credential" });
   } else {
-    bcrypt.compare(password, user.password, function(err, result) {
+    bcrypt.compare(password, user.password, function (err, result) {
       if (result) {
-        return res.status(200).json({ success:true, message: "login successfull", data: user})
-      }else {
-        return res.status(404).json({ success:false, message: "invalid credential"});
+        return res
+          .status(200)
+          .json({ success: true, message: "login successfull", data: user });
+      } else {
+        return res
+          .status(404)
+          .json({ success: false, message: "invalid credential" });
       }
-});
-    // if(password === user.password){
-    //   return res.status(200).json({ success:true, message: "login successfull", data: user });
-    // }
-    
-  } 
-  
-}
+    });
+  }
+};
 
 module.exports = { signupController, verifyOtpController, loginController };
