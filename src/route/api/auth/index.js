@@ -1,6 +1,6 @@
 const express = require("express");
 const { signupController, verifyOtpController, loginController, alluserController } = require("../../../controller/authController");
-const { authMiddelware } = require("../../../utils/authMiddleware");
+const { TokenCheckMiddelware, adminCheck } = require("../../../utils/authMiddleware");
 const router = express.Router()
 
 // http://localhost:3000/api/v1/auth/signup
@@ -10,6 +10,6 @@ router.post("/verify-otp", verifyOtpController)
 // http://localhost:3000/api/v1/auth/login
 router.post("/login", loginController) 
 // http://localhost:3000/api/v1/auth/allusers
-router.get("/allusers",authMiddelware, alluserController) 
+router.get("/allusers",TokenCheckMiddelware, adminCheck, alluserController) 
 
 module.exports = router;
