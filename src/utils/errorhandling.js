@@ -1,6 +1,5 @@
 const errorHandlingMiddelware = (err, req, res, next) =>{
-    // console.log(err)
-    // return res.status(400).json({ success: false, message: "something went wrong"})
+    
     if (err.name === "ValidationError") {
       let errors = {};
 
