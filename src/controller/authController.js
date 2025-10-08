@@ -121,6 +121,7 @@ const alluserController = async (req, res, next) => {
   try {
     // if (req.session.userInfo) {
     //   if (req.session.userInfo.role == "admin") {
+    
         let allusers = await userModel.find({}).select("-paaword");
         return res.status(200).json({
           success: true,

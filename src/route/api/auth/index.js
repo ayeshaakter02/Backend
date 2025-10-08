@@ -10,7 +10,6 @@ router.post("/verify-otp", verifyOtpController)
 // http://localhost:3000/api/v1/auth/login
 router.post("/login", loginController) 
 // http://localhost:3000/api/v1/auth/allusers
-
 router.get("/allusers",TokenCheckMiddelware, adminCheck, alluserController) 
 // router.get("/allusers", alluserController) 
 
