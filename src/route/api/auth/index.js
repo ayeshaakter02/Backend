@@ -1,5 +1,5 @@
 const express = require("express");
-const { signupController, verifyOtpController, loginController, alluserController } = require("../../../controller/authController");
+const { signupController, verifyOtpController, loginController, alluserController, logoutController } = require("../../../controller/authController");
 // const { TokenCheckMiddelware, adminCheck } = require("../../../utils/authMiddleware");
 const router = express.Router()
 
@@ -14,4 +14,5 @@ router.post("/login", loginController)
 // router.get("/allusers",TokenCheckMiddelware, adminCheck, alluserController) 
 router.get("/allusers", alluserController) 
 
+router.post("/logout", logoutController) 
 module.exports = router;

@@ -118,8 +118,9 @@ const loginController = async (req, res, next) => {
 };
 
 const alluserController = async (req, res, next) => {
+  console.log(req.session.userInfo)
   try {
-    if (req.session) {
+    if (req.session.userInfo) {
       if (req.session.userInfo.role == "admin") {
         let allusers = await userModel.find({}).select("-paaword");
         return res.status(200).json({
@@ -139,9 +140,20 @@ const alluserController = async (req, res, next) => {
   }
 };
 
+const logoutController = async(req, res, next) => {
+  req.session.destroy(function(err) {
+    console.log(err)
+    if(err){
+      return res.status(500).json({success: false, message: err})
+    }else{
+      return res.status(200).json({success: true, message: "logout successful"})
+    }
+})
+}
 module.exports = {
   signupController,
   verifyOtpController,
   loginController,
   alluserController,
+  logoutController
 };
