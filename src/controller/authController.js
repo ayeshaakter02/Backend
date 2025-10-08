@@ -2,7 +2,7 @@ const userModel = require("../model/signup.model");
 const generateOTP = require("../utils/otp");
 const sendEmail = require("../utils/send-email");
 const bcrypt = require("bcrypt");
-// const jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 
 const signupController = async (req, res, next) => {
   try {
@@ -92,21 +92,20 @@ const loginController = async (req, res, next) => {
   } else {
     bcrypt.compare(password, user.password, function (err, result) {
       if (result) {
-        // let token = jwt.sign(
-        //   { email: user.email, role: user.role },
-        //   process.env.PRIVETE_KEY,
-        //   { expiresIn: "60m" }
-        // );
+        let token = jwt.sign(
+          { email: user.email, role: user.role },
+          process.env.PRIVETE_KEY,
+          { expiresIn: "60m" }
+        );
 
-        // req.session.cookie.secure = true;
-        req.session.cookie.maxAge = 60000;
-        req.session.userInfo = user;
+        // req.session.cookie.maxAge = 60000;
+        // req.session.userInfo = user;
 
         return res.status(200).json({
           success: true,
           message: "login successfull",
           data: user,
-          // token,
+          token,
         });
       } else {
         return res
@@ -120,23 +119,23 @@ const loginController = async (req, res, next) => {
 const alluserController = async (req, res, next) => {
   console.log(req.session.userInfo)
   try {
-    if (req.session.userInfo) {
-      if (req.session.userInfo.role == "admin") {
+    // if (req.session.userInfo) {
+    //   if (req.session.userInfo.role == "admin") {
         let allusers = await userModel.find({}).select("-paaword");
         return res.status(200).json({
           success: true,
           message: "all users fetch successful",
           data: allusers,
         });
-      } else {
-        return res.status(401).json({ success: true, message: "unauthorize" });
-      }
-    }else{
-      return res.status(404).json({success:false, message: "session expire"})
-    }
+    //   } else {
+    //     return res.status(401).json({ success: true, message: "unauthorize" });
+    //   }
+    // }else{
+    //   return res.status(404).json({success:false, message: "session expire"})
+    // }
 
   } catch (error) {
-    next(error);
+    // next(error);
   }
 };
 

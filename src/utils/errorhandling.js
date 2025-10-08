@@ -8,9 +8,10 @@ const errorHandlingMiddelware = (err, req, res, next) =>{
       });
 
       return res.status(400).send(errors);
-    }else{
-      return res.status(400).json({success: false, message: "Internal server error"});
     }
+    // else{
+    //   return res.status(400).json({success: false, message: "Internal server error"});
+    // }
 }
 
 module.exports = errorHandlingMiddelware
