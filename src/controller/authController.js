@@ -97,7 +97,6 @@ const loginController = async (req, res, next) => {
           process.env.PRIVETE_KEY,
           { expiresIn: "60m" }
         );
-
         // req.session.cookie.maxAge = 60000;
         // req.session.userInfo = user;
 
@@ -119,9 +118,10 @@ const loginController = async (req, res, next) => {
 const alluserController = async (req, res, next) => {
   console.log(req.session.userInfo)
   try {
+    
     // if (req.session.userInfo) {
     //   if (req.session.userInfo.role == "admin") {
-    
+
         let allusers = await userModel.find({}).select("-paaword");
         return res.status(200).json({
           success: true,

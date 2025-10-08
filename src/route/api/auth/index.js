@@ -12,6 +12,6 @@ router.post("/login", loginController)
 // http://localhost:3000/api/v1/auth/allusers
 router.get("/allusers",TokenCheckMiddelware, adminCheck, alluserController) 
 // router.get("/allusers", alluserController) 
-
+// http://localhost:3000/api/v1/auth/logout
 router.post("/logout", logoutController) 
 module.exports = router;
