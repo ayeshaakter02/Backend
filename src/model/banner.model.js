@@ -1,6 +1,6 @@
 const { default: mongoose } = require("mongoose")
 const bcrypt = require('bcrypt');
-const userSchema = new mongoose.Schema({
+const bannerSchema = new mongoose.Schema({
     image : {
         type:String,
         required: [true, "image is required"]
@@ -12,4 +12,4 @@ const userSchema = new mongoose.Schema({
 } , {timestamps:true}
 )
 
-module.exports = mongoose.model("User", userSchema)
+module.exports = mongoose.model("Banner", bannerSchema)
