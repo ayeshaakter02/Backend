@@ -3,7 +3,20 @@ const { addBannerController } = require("../../../controller/bannerController");
 const multer  = require('multer')
 const router = express.Router()
 
-const upload = multer({ dest: 'uploads/' })
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './uploads')
+  },
+  filename: function (req, file, cb) {
+    console.log(file)
+    const randomtext = Date.now() + '-' + Math.round(Math.random() * 1E9)
+    let fileextension = file.originalname.split(".")
+    let extension = fileextension[fileextension.length-1]
+    cb(null, file.fieldname + '-' + randomtext + "." + extension)
+  }
+})
+
+const upload = multer({ storage: storage })
 
 // http://localhost:3000/api/v1/banner/addbanner
 router.post("/addbanner", upload.single("banner") , addBannerController)
