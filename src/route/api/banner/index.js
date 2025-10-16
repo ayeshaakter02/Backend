@@ -1,5 +1,5 @@
 const express = require("express");
-const { addBannerController, deleteBannerController } = require("../../../controller/bannerController");
+const { addBannerController, deleteBannerController, updateBannerController } = require("../../../controller/bannerController");
 const upload = require("../../../utils/addbannerMiddleware");
 const { TokenCheckMiddelware, adminCheck } = require("../../../utils/authMiddleware");
 const router = express.Router()
@@ -8,5 +8,8 @@ const router = express.Router()
 router.post("/addbanner",TokenCheckMiddelware,adminCheck, upload.single("banner") , addBannerController)
 // http://localhost:3000/api/v1/banner/deletebanner/:id
 router.delete("/deletebanner/:id",TokenCheckMiddelware, adminCheck, deleteBannerController)
+// http://localhost:3000/api/v1/banner/updatebanner/:id
+router.patch("/updatebanner/:id",upload.single("banner") , updateBannerController)
+
 
 module.exports = router;
