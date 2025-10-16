@@ -1,5 +1,5 @@
 let addCategoryController = (req,res) =>{
-    res.send("poki")
+    res.send("category successfully added")
 }
 
 module.exports ={ addCategoryController}
