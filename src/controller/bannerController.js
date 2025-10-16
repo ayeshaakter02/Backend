@@ -25,27 +25,41 @@ let addBannerController = async (req, res) => {
 let deleteBannerController = async (req, res) => {
   try {
     const { id } = req.params;
-    if (!id) {
-      return res.status(400).json({
-        success: false,
-        message: "Banner ID not provided",
-      });
-    }
+    let deletebanner = await bannerModel.findOneAndDelete({ _id: id });
+    let imageurl = deletebanner.image.split("/");
+    let filepath = path.join(__dirname, "../../uploads");
 
-    const deletedBanner = await bannerModel.findByIdAndDelete(id);
+    fs.unlink(`${filepath}/${imageurl[imageurl.length - 1]}`, (err) => {
+      if (err) {
+        console.log(err, "error");
+      }
+    });
+    return res.send(deletebanner);
 
-    if (!deletedBanner) {
-      return res.status(404).json({
-        success: false,
-        message: "Banner not found",
-      });
-    } else {
-      return res.status(200).json({
-        success: true,
-        message: "Banner deleted successfully",
-        deletedBanner,
-      });
-    }
+
+    // if (!id) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "Banner ID not provided",
+    //   });
+    // }
+
+    // const deletedBanner = await bannerModel.findByIdAndDelete(id);
+
+    // if (!deletedBanner) {
+    //   return res.status(404).json({
+    //     success: false,
+    //     message: "Banner not found",
+    //   });
+    // } else {
+    //   return res.status(200).json({
+    //     success: true,
+    //     message: "Banner deleted successfully",
+    //     deletedBanner,
+    //   });
+    // }
+
+
   } catch (error) {
     console.error("Error deleting banner:", error);
     return res.status(500).json({
@@ -54,5 +68,8 @@ let deleteBannerController = async (req, res) => {
     });
   }
 };
+
+
+
 
 module.exports = { addBannerController, deleteBannerController };
