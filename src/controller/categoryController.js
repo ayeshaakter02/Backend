@@ -65,4 +65,62 @@ let deleteCategoryController = async (req, res) => {
   }
 };
 
-module.exports ={ addCategoryController ,deleteCategoryController}
+let updateCategoryController = async (req, res) => {
+  try {
+    let { id } = req.params;
+    let { filename } = req.file;
+    let { name } = req.body;
+
+    if (!name && !filename) {
+      return res.status(404).json({
+        success: false,
+        message: "category name and image are required",
+      });
+    } else {
+      let category = await categoryModel.findById(id);
+
+      if (!category) {
+        return res
+          .status(404)
+          .json({ success: false, message: error.message || error });
+      } else {
+        // delete old image path
+        let imageurl = category.image.split("/");
+
+        let imagepath = imageurl[imageurl.length - 1];
+        let uploadfolder = path.join(__dirname, "../../uploads");
+
+        fs.unlink(uploadfolder + "/" + imagepath, (err) => {
+          if (err)
+            return res.status(500).json({ success: false, message: err });
+        });
+        // delete old image path
+
+        // update image and category name
+        let slug = slugify(name, {
+          replacement: "-",
+          remove: undefined,
+          lower: true,
+          trim: true,
+        });
+
+        category.image = `${process.env.SERVER_URL}/${filename}`,
+        category.name = name;
+        category.slug = slug
+
+        await category.save();
+
+        return res
+          .status(200)
+          .json({ success: true, message: "category updated successful" });
+        // update image and category name
+      }
+    }
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ success: false, message: error.message || error });
+  }
+};
+
+module.exports ={ addCategoryController ,deleteCategoryController , updateCategoryController}
