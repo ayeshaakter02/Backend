@@ -34,4 +34,35 @@ let addCategoryController = async (req, res) => {
   }
 };
 
-module.exports ={ addCategoryController}
+let deleteCategoryController = async (req, res) => {
+  try {
+    let { id } = req.params;
+
+    let category = await categoryModel.findByIdAndDelete(id);
+
+    if (!category) {
+      return res
+        .status(404)
+        .json({ success: false, message: error.message || error });
+    } else {
+      let imageurl = category.image.split("/");
+
+      let imagepath = imageurl[imageurl.length - 1];
+      let uploadfolder = path.join(__dirname, "../../uploads");
+
+      fs.unlink(uploadfolder + "/" + imagepath, (err) => {
+        if (err) return res.status(500).json({ success: false, message: err });
+      });
+
+      return res
+        .status(200)
+        .json({ success: true, message: "category deleted successful" });
+    }
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ success: false, message: error.message || error });
+  }
+};
+
+module.exports ={ addCategoryController ,deleteCategoryController}
