@@ -104,9 +104,9 @@ let updateCategoryController = async (req, res) => {
           trim: true,
         });
 
-        category.image = `${process.env.SERVER_URL}/${filename}`,
-        category.name = name;
-        category.slug = slug
+        (category.image = `${process.env.SERVER_URL}/${filename}`),
+          (category.name = name);
+        category.slug = slug;
 
         await category.save();
 
@@ -123,17 +123,30 @@ let updateCategoryController = async (req, res) => {
   }
 };
 
-let allCategoryController = async(req,res)=>{
+let allCategoryController = async (req, res) => {
+  try {
+    let allcategory = await categoryModel.find({}).populate({
+      path: "subcategory",
+      select: "name slug",
+    });
 
-    try {
+    return res
+      .status(200)
+      .json({
+        success: true,
+        message: "category fetch successful",
+        data: allcategory,
+      });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ success: false, message: error.message || error });
+  }
+};
 
-        let allcategory = await categoryModel.find({})
-
-        return res.status(200).json({success:true, message: "category fetch successful", data: allcategory})
-        
-    } catch (error) {
-        return res.status(500).json({success: false, message: error.message || error })
-    }
-}
-
-module.exports ={ addCategoryController ,deleteCategoryController , updateCategoryController , allCategoryController}
+module.exports = {
+  addCategoryController,
+  deleteCategoryController,
+  updateCategoryController,
+  allCategoryController,
+};
