@@ -32,6 +32,21 @@ let addSubCategoryController = async(req,res) =>{
     }
 }
 
+let deleteSubCategoryController = async (req,res) =>{
 
+    try {
 
-module.exports = { addSubCategoryController }
+        let {id} = req.params;
+
+        await subcategoryModel.findByIdAndDelete(id)
+
+        await categoryModel.findOneAndUpdate({subcategory:id }, {$pull:({subcategory:id})})
+
+        return res.status(200).json({success:true, message:"sub category deleted successfully"})
+        
+    } catch (error) {
+        return res.status(500).json({ success:false, message: error.message || error})
+    }
+}
+
+module.exports = { addSubCategoryController, deleteSubCategoryController }
