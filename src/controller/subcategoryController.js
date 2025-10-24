@@ -49,4 +49,26 @@ let deleteSubCategoryController = async (req,res) =>{
     }
 }
 
-module.exports = { addSubCategoryController, deleteSubCategoryController }
+let updatesubcategoryController = async (req,res)=>{
+
+    try {
+
+        let {id} = req.params;
+        let {name} = req.body;
+        let slug = slugify(name,{
+            replacement: '-',
+            remove: undefined,
+            lower: true,
+            trim: true
+        })
+        await subcategoryModel.findByIdAndUpdate(id, {name, slug})
+
+        return res.status(200).json({success:"true", message:"subcategor updated"})
+       
+        
+    } catch (error) {
+        return res.status(500).json({ success:false, message: error.message || error})
+    }
+}
+
+module.exports = { addSubCategoryController, deleteSubCategoryController, updatesubcategoryController }

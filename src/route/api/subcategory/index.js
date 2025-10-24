@@ -7,6 +7,7 @@ const router = express.Router()
 router.post("/addsubcategory", addSubCategoryController)
 // http://localhost:3000/api/v1/subcategory/deletesubcategory/:id
 router.delete("/deletesubcategory/:id", deleteSubCategoryController)
-
+// http://localhost:3000/api/v1/subcategory/updatesubcategory/:id
+router.patch("/updatesubcategory/:id",  updatesubcategoryController)
 
 module.exports = router; 
