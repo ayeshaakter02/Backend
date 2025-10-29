@@ -1,11 +1,14 @@
 const { default: mongoose } = require("mongoose");
-const bcrypt = require("bcrypt");
 const productSchema = new mongoose.Schema(
   {
     title: {
       type: String,
       required: [true, "name is required"],
       unique: true,
+    },
+    image: {
+      type: String,
+      required: [true, "image is required"],
     },
     description: {
       type: String,
