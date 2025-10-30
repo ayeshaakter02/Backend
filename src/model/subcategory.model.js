@@ -1,5 +1,4 @@
 const { default: mongoose } = require("mongoose");
-const bcrypt = require("bcrypt");
 const subCategorySchema = new mongoose.Schema(
   {
     name: {
