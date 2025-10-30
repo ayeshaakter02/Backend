@@ -1,19 +1,51 @@
+const { default: slugify } = require("slugify");
 const productModel = require("../model/product.model");
 const createProductController = async (req, res) => {
   try {
-    const {
-      title, description, price, discountprice, reviews, variantType, stock, category, slug,
+    let {
+      title,
+      description,
+      price,
+      discountprice,
+      reviews,
+      variantType,
+      stock,
+      category,
     } = req.body;
 
+    let slug = slugify(title, {
+      replacement: "-",
+      remove: undefined,
+      lower: true,
+      trim: true,
+    });
 
+    let imagefile = req.files.map((item) => {
+      return `${process.env.SERVER_URL}/${item.filename}`;
+    });
 
     let product = new productModel({
-      title, description, price, discountprice, reviews, variantType, stock, category, slug,
-    })
-    await product.save()
+      title,
+      description,
+      price,
+      discountprice,
+      reviews,
+      variantType,
+      stock,
+      category,
+      slug,
+      image: imagefile,
+    });
+    await product.save();
 
     if (
-      !title || !description || !price || !discountprice || !variantType || !stock || !category
+      !title ||
+      !description ||
+      !price ||
+      !discountprice ||
+      !variantType ||
+      !stock ||
+      !category
     ) {
       return res.status(400).json({
         success: false,
@@ -26,7 +58,6 @@ const createProductController = async (req, res) => {
       message: "Product data received successfully",
       data: req.body,
     });
-
   } catch (error) {
     console.error("Error in createProductController:", error);
     return res.status(500).json({
@@ -36,4 +67,4 @@ const createProductController = async (req, res) => {
   }
 };
 
-module.exports = {createProductController}
+module.exports = { createProductController };
