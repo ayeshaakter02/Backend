@@ -9,6 +9,10 @@ const variantSchema = new mongoose.Schema(
     stock: {
       type: Number,
     },
+    product: {
+      type: mongoose.Types.ObjectId,
+      ref: "Product",
+    },
   },
   { timestamps: true }
 );

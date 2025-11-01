@@ -1,5 +1,5 @@
 const express = require("express");
-const { addSubCategoryController, deleteSubCategoryController } = require("../../../controller/subcategoryController");
+const { addSubCategoryController, deleteSubCategoryController, updatesubcategoryController } = require("../../../controller/subcategoryController");
 
 const router = express.Router()
 
